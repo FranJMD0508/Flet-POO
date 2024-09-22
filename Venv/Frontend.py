@@ -93,6 +93,7 @@ class ConversorNumeros:
             text="Convertir",
             bgcolor = "#52A644",
             color = "#FFFFFF",
+            on_click = self.Convertir
         )
         self.b3 = ft.ElevatedButton(
             text="Reiniciar",
@@ -123,6 +124,11 @@ class ConversorNumeros:
         
     def Filtrar(self,e):
         e.control.value = bc.Conversor.filtro(self,self.dd1.value,e.control.value)
+        self.page.update()
+        
+    def Convertir(self,e):
+        decimal = bc.Conversor.convertir_decimal(self,self.tf1.value,self.dd1.value)
+        self.tf2.value = bc.Conversor.convertir_final(self,decimal,self.dd2.value)
         self.page.update()
         
 def main(page: ft.Page):
