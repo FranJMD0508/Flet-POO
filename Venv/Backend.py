@@ -7,7 +7,7 @@ class Conversor:
             decimal = int(num,2)
         elif tipo1 == "Hexadecimal":
             decimal = int(num, 16)
-        elif tipo1 == "Terciario":
+        elif tipo1 == "Ternario":
             decimal = int(num, 3)
         elif tipo1 == "Cuaternario":
             decimal = int(num,4)
@@ -20,6 +20,28 @@ class Conversor:
     def convertir_final(self,decimal,tipo2):
         if tipo2 == "Binario":
             return bin(int(decimal))[2:]
+        elif tipo2 == "Hexadecimal":
+            return hex(int(decimal))[2:]
+        elif tipo2 == "Ternario":
+            if decimal == 0:
+                return "0"
+            ternario = ""
+            while decimal > 0:
+                ternario = str(decimal % 3) + ternario
+                decimal //= 3
+            return ternario
+        elif tipo2 == "Cuaternario":
+            if decimal == 0:
+                return "0"
+            cuaternario = ""
+            while decimal > 0:
+                cuaternario = str(decimal%4) + cuaternario
+                decimal //=4
+            return cuaternario
+        elif tipo2 == "Octal":
+            return oct(decimal)[2:]
+        else:
+            return decimal
         
     def filtro(self,tipo,txt):
         if tipo == "Binario":

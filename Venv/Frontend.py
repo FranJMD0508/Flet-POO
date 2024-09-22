@@ -114,7 +114,8 @@ class ConversorNumeros:
         self.page.update()
     
     def Invertir(self,e):
-        self.Reiniciar(self.b1)
+        if self.dd1.value != self.dd2.value:
+            self.Reiniciar(self.b1)
         op1 = self.dd1.value
         op2 = self.dd2.value
         
@@ -127,9 +128,10 @@ class ConversorNumeros:
         self.page.update()
         
     def Convertir(self,e):
-        decimal = bc.Conversor.convertir_decimal(self,self.tf1.value,self.dd1.value)
-        self.tf2.value = bc.Conversor.convertir_final(self,decimal,self.dd2.value)
-        self.page.update()
+        if self.tf1.value != "":
+            decimal = bc.Conversor.convertir_decimal(self,self.tf1.value,self.dd1.value)
+            self.tf2.value = bc.Conversor.convertir_final(self,decimal,self.dd2.value)
+            self.page.update()
         
 def main(page: ft.Page):
     ConversorNumeros(page)
