@@ -1,14 +1,15 @@
 import flet as ft
+import Backend as bc
 
 class ConversorNumeros:
     def __init__(self, page: ft.Page):
         self.page = page
         self.page.window.center()
         self.page.title = "Convertidor de Numeros"
-        self.page.window_width = 764
-        self.page.window_height = 380
-        self.page.window_resizable = False
-        self.page.window_maximizable = False
+        self.page.window.width = 764
+        self.page.window.height = 380
+        self.page.window.resizable = False
+        self.page.window.maximizable = False
         self.page.bgcolor = "#0E183A"
         self.page.fonts = {
             "Inter": "Inter-Regular.ttf"
@@ -16,7 +17,7 @@ class ConversorNumeros:
         self.Interfaz()
         
     def Interfaz(self):
-        ConTxt = ft.Container(
+        ConTit = ft.Container(
             content = ft.Text(
                 value="CONVERSOR DE NÚMEROS",
                 size = 25,
@@ -29,7 +30,7 @@ class ConversorNumeros:
                 ft.dropdown.Option("Binario"),
                 ft.dropdown.Option("Hexadecimal"),
                 ft.dropdown.Option("Decimal"),
-                ft.dropdown.Option("Terciario"),
+                ft.dropdown.Option("Ternario"),
                 ft.dropdown.Option("Cuaternario"),
                 ft.dropdown.Option("Octal")
             ],
@@ -38,14 +39,15 @@ class ConversorNumeros:
             fill_color= "#d9d9d9",
             text_style=ft.TextStyle(
                 weight=ft.FontWeight.BOLD
-            )
+            ),
+            on_change = self.Reiniciar
         )
         self.dd2 = ft.Dropdown(
             options=[
                 ft.dropdown.Option("Binario"),
                 ft.dropdown.Option("Hexadecimal"),
                 ft.dropdown.Option("Decimal"),
-                ft.dropdown.Option("Terciario"),
+                ft.dropdown.Option("Ternario"),
                 ft.dropdown.Option("Cuaternario"),
                 ft.dropdown.Option("Octal")
             ],
@@ -66,7 +68,8 @@ class ConversorNumeros:
             min_lines=8,
             max_lines=8,
             width=300,
-            fill_color= "#d9d9d9"
+            fill_color= "#d9d9d9",
+            on_change = self.Filtrar
         )
         self.tf2 = ft.TextField(
             hint_text="Aqui aparecerá el numero convertido",
@@ -81,27 +84,46 @@ class ConversorNumeros:
             read_only = True,
             fill_color= "#d9d9d9"
         )
-        b1 = ft.IconButton(
+        self.b1 = ft.IconButton(
             icon=ft.icons.ARROW_BACK,
-            width = 108
+            width = 108,
+            on_click = self.Invertir
         )
-        b2 = ft.ElevatedButton(
+        self.b2 = ft.ElevatedButton(
             text="Convertir",
             bgcolor = "#52A644",
-            color = "#FFFFFF"
+            color = "#FFFFFF",
         )
-        b3 = ft.ElevatedButton(
+        self.b3 = ft.ElevatedButton(
             text="Reiniciar",
             width = 107,
             bgcolor = "#FF4B4B",
-            color = "#FFFFFF"
+            color = "#FFFFFF",
+            on_click = self.Reiniciar
         )
         self.page.add(ft.Column([
-            ConTxt,ft.Column([
+            ConTit,ft.Column([
                 ft.Row([
-                    self.dd1,b1,self.dd2]),ft.Row([
+                    self.dd1,self.b1,self.dd2]),ft.Row([
                         self.tf1,ft.Column([
-                            b2,b3]),self.tf2])])]))
+                            self.b2,self.b3]),self.tf2])])]))
+    def Reiniciar(self,e):
+        self.tf1.value = ""
+        self.tf2.value = ""
+        self.page.update()
+    
+    def Invertir(self,e):
+        self.Reiniciar(self.b1)
+        op1 = self.dd1.value
+        op2 = self.dd2.value
+        
+        self.dd1.value = op2
+        self.dd2.value = op1
+        self.page.update()
+        
+    def Filtrar(self,e):
+        e.control.value = bc.Conversor.filtro(self,self.dd1.value,e.control.value)
+        self.page.update()
         
 def main(page: ft.Page):
     ConversorNumeros(page)
